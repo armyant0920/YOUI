@@ -36,9 +36,11 @@ public class ListShowActivity extends AppCompatActivity {
         commentDb = mDbOpenHelper.getWritableDatabase();
 
         // 檢查資料表是否已經存在
+//        Cursor cursor2=commentDb.rawQuery("select DISTINCT tbl_name from sqlite_master where tbl_name ='"+DB_TABLE +,);
         Cursor cursor = commentDb.rawQuery(
                 "select DISTINCT tbl_name from sqlite_master where tbl_name = '" +
                         DB_TABLE + "'", null);
+
 
         if (cursor != null) {
             if (cursor.getCount() == 0)    // 沒有資料表，需要建立一個資料表

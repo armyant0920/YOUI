@@ -1,6 +1,8 @@
 package com.example.youi_beta;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +17,11 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -24,6 +29,7 @@ public class info extends AppCompatActivity {
     Bundle bData;
     private TextView Name, Style_price, Friendly_area, Addr_phone, Time, Information;
     private Button btn_map, btn_phone, btn_comment;
+    private static final int CUSTOM_NUMBER = 1;
     //按鈕
     private String queryID;
     private String picturePath;
@@ -113,6 +119,20 @@ public class info extends AppCompatActivity {
         btn_map.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                int permission = ContextCompat.checkSelfPermission(getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION);
+                Log.d("permission",String.valueOf(permission));
+                if (permission !=PackageManager.PERMISSION_GRANTED) {
+                    //未取得權限，向使用者要求允許權限
+                    Toast.makeText(info.this,"需開啟定位權限以進入地圖功能",Toast.LENGTH_SHORT).show();
+
+                    ActivityCompat.requestPermissions(info.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            CUSTOM_NUMBER);
+                }
+                    else{
+                        //已有權限，可進行下一步
+
                 Intent i=new Intent(info.this,MapsActivity.class);
                 i.putExtra("name",infoName);
                 i.putExtra("address",infoAddress);
@@ -121,6 +141,7 @@ public class info extends AppCompatActivity {
                 Log.d("Lat(put)=",String.valueOf(infoLatitude));
                 Log.d("Lon(put)=",String.valueOf(infoLongitude));
                 startActivity(i);
+                }
 
             }
         });

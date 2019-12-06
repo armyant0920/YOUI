@@ -43,8 +43,8 @@ import java.util.ArrayList;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener, LocationSource {
 
 
-    Location myLocation;
-    Float mdLat = 24.819970f, mdLon = 121.233422f;//bundle的值 目標店家經緯度
+
+    Float mdLat,mdLon;//bundle的值 目標店家經緯度
     Double dLat, dLon;       // 目前定位經緯度
 
     private GoogleMap mMap;
@@ -348,6 +348,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mLocationChangeListener.onLocationChanged(location);
         //移動地圖到新位置
         mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(location.getLatitude(),location.getLongitude())));
+        //移動Marker
+        mMarker2.setPosition(new LatLng(location.getLatitude(),location.getLongitude()));
     }
 
     @Override
@@ -384,6 +386,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mLocationChangeListener=onLocationChangedListener;
         checkLocationPermissionAndEnableIt(true);
         Toast.makeText(MapsActivity.this,"地圖的 my-location layer  已經啟用",Toast.LENGTH_LONG).show();
+
     }
 
     @Override
